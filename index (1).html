@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skapad till Guds Avbild - Interaktiv Bibelresa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Bitter:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-content">
+                <h1 class="main-title">Skapad till Guds Avbild</h1>
+                <p class="subtitle">En resa från intention till verklighet</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="totalProgress"></div>
+                    <span class="progress-text" id="progressText">0% slutfört</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Timeline Navigation -->
+        <nav class="timeline-nav">
+            <div class="timeline-container" id="timelineContainer">
+                <!-- Genereras dynamiskt med JavaScript -->
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content-area" id="contentArea">
+            <!-- Startskärm -->
+            <div class="welcome-screen" id="welcomeScreen">
+                <div class="welcome-content">
+                    <h2>Välkommen till din Bibelresa</h2>
+                    <p>Denna interaktiva upplevelse tar dig genom grunderna i den kristna tron, strukturerat i sex delar med ett tydligt narrativ.</p>
+                    <p>Du kommer att:</p>
+                    <ul>
+                        <li>Läsa korta texter från varje kapitel</li>
+                        <li>Utforska bibelreferenser direkt i texten</li>
+                        <li>Besvara reflektionsfrågor</li>
+                        <li>Låsa upp nästa steg i resan</li>
+                    </ul>
+                    <button class="btn-primary" onclick="app.startJourney()">Börja resan</button>
+                </div>
+            </div>
+
+            <!-- Kapitelvy -->
+            <div class="chapter-view hidden" id="chapterView">
+                <div class="chapter-header">
+                    <button class="btn-back" onclick="app.backToTimeline()">← Tillbaka till översikt</button>
+                    <span class="chapter-label" id="chapterLabel"></span>
+                </div>
+                
+                <article class="chapter-content" id="chapterContent">
+                    <!-- Innehåll laddas dynamiskt -->
+                </article>
+
+                <div class="chapter-actions">
+                    <button class="btn-secondary" id="quizButton" onclick="app.startQuiz()">Fortsätt till reflektion →</button>
+                </div>
+            </div>
+
+            <!-- Quizvy -->
+            <div class="quiz-view hidden" id="quizView">
+                <div class="quiz-container">
+                    <h3>Reflektion och förståelse</h3>
+                    <p class="quiz-intro">Besvara minst 2 av 3 frågor korrekt för att fortsätta din resa.</p>
+                    
+                    <div id="quizQuestions">
+                        <!-- Frågor laddas dynamiskt -->
+                    </div>
+
+                    <div class="quiz-result hidden" id="quizResult">
+                        <p id="resultMessage"></p>
+                        <button class="btn-primary" id="nextButton" onclick="app.completeChapter()">Fortsätt →</button>
+                    </div>
+
+                    <button class="btn-primary" id="submitQuiz" onclick="app.submitQuiz()">Kontrollera svar</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal för bibelreferenser -->
+        <div class="modal hidden" id="bibleModal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="app.closeModal()">×</button>
+                <h3 id="bibleRefTitle"></h3>
+                <div class="bible-text" id="bibleText"></div>
+                <p class="bible-source">Svenska kärnbibeln</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="bible-data.js"></script>
+    <script src="content-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
