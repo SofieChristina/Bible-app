@@ -1,1 +1,0 @@
-https://claude.ai/public/artifacts/819ebac2-6a34-4c6a-a9bd-1ada8b126e16
