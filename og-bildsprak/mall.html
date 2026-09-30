@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>OG-mall · Bibelns bildspråk</title>
+<!--
+  Delningsbild (OG-bild) för Bibelns bildspråk på ordkallan.se – 1200 × 630 px.
+  Endast två saker varierar: ?ikon=<nyckel> och ?namn=<ledfamiljens namn>.
+  Allt annat är låst. Exempel: mall.html?ikon=ljus&namn=Ljuset
+  Lägg till nya ikoner i IKONER längre ned (viewBox 0 0 100 100, linjeikon).
+-->
+<style>
+  @font-face { font-family: "Playfair Display"; font-weight: 500; src: url(fonts/playfair-display-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Inter"; font-weight: 500; src: url(fonts/inter-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Inter"; font-weight: 600; src: url(fonts/inter-latin-600-normal.woff2) format("woff2"); }
+
+  :root {
+    --sand: #FAF6F1;
+    --falt: #EBE3D5;
+    --terrakotta: #D66853;
+    --terrakotta-djup: #8B3A2A;
+    --text: #3E2010;
+    --text-sek: #4A3728;
+    --linje: #C9BFB2;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--sand); }
+  body { width: 1200px; height: 630px; overflow: hidden; }
+
+  .kort { position: relative; width: 1200px; height: 630px; background: var(--sand); }
+
+  /* Tunn ram – ren dekor, ligger utanför den säkra ytan */
+  .ram { position: absolute; inset: 36px; border: 2px solid var(--linje); border-radius: 6px; }
+
+  /* Mjukt fält bakom ikonen */
+  .falt {
+    position: absolute; left: 100px; top: 145px;
+    width: 340px; height: 340px; border-radius: 50%;
+    background: var(--falt);
+  }
+  .ikon { position: absolute; left: 150px; top: 195px; width: 240px; height: 240px; }
+  .ikon svg { width: 100%; height: 100%; display: block; }
+
+  /* Textblock – säker yta: x 80–1120, y 80–550 */
+  .text {
+    position: absolute; left: 520px; right: 80px; top: 80px; bottom: 80px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .etikett {
+    font-family: "Inter", sans-serif; font-weight: 600;
+    font-size: 26px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--terrakotta-djup);
+  }
+  .streck { width: 64px; height: 3px; background: var(--terrakotta); margin: 26px 0 30px; border-radius: 2px; }
+  .namn {
+    font-family: "Playfair Display", serif; font-weight: 500;
+    font-size: 112px; line-height: 1.04; letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .adress {
+    position: absolute; right: 80px; bottom: 80px;
+    font-family: "Inter", sans-serif; font-weight: 500;
+    font-size: 24px; letter-spacing: 0.02em; color: var(--text-sek);
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+<div class="kort">
+  <div class="ram"></div>
+  <div class="falt"></div>
+  <div class="ikon" id="ikon"></div>
+  <div class="text">
+    <div class="etikett">Bibelns bildspråk</div>
+    <div class="streck"></div>
+    <div class="namn" id="namn">Ledfamiljens namn</div>
+  </div>
+  <div class="adress">ordkallan.se</div>
+</div>
+
+<script>
+  // Ikoner: linjeikoner i terrakotta (#D66853), detaljer i #8B3A2A.
+  // Inga grodd-, plant- eller trädmotiv (reserverade i systemet).
+  const T = "#D66853", D = "#8B3A2A";
+  const IKONER = {
+    // Platshållare som visar ikonytan i mallen
+    mall: `<svg viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="38" stroke="${T}" stroke-width="3" stroke-dasharray="6 6"/>
+      <path d="M40 50h20M50 40v20" stroke="${D}" stroke-width="3" stroke-linecap="round"/>
+    </svg>`,
+
+    // Ljuset: oljelampa med låga och strålar
+    ljus: `<svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M50 18c7 8 9 14 9 19a9 9 0 0 1-18 0c0-5 2-11 9-19z" fill="${T}"/>
+      <path d="M50 32c2.5 3 3.5 5 3.5 7a3.5 3.5 0 0 1-7 0c0-2 1-4 3.5-7z" fill="${D}"/>
+      <path d="M30 22l-6-6M70 22l6-6M26 38h-9M74 38h9" stroke="${T}" stroke-width="4.5"/>
+      <path d="M20 58h52c7 0 12-3 14-8-2 12-14 22-36 22-18 0-28-6-30-14z" stroke="${T}" stroke-width="5"/>
+      <path d="M44 50h12" stroke="${D}" stroke-width="5"/>
+      <path d="M38 80h24" stroke="${T}" stroke-width="5"/>
+    </svg>`,
+
+    // Vattnet: droppe över vågor
+    vatten: `<svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M50 12c10 13 15 21 15 28a15 15 0 0 1-30 0c0-7 5-15 15-28z" fill="${T}"/>
+      <path d="M44 42a7 7 0 0 0 5 6" stroke="${D}" stroke-width="3.5"/>
+      <path d="M14 68c6-6 12-6 18 0s12 6 18 0 12-6 18 0 12 6 18 0" stroke="${T}" stroke-width="5"/>
+      <path d="M22 84c5-5 10-5 15 0s10 5 15 0 10-5 15 0 10 5 15 0" stroke="${D}" stroke-width="4.5"/>
+    </svg>`,
+  };
+
+  const p = new URLSearchParams(location.search);
+  const ikon = p.get("ikon") || "mall";
+  const namn = p.get("namn") || "Ledfamiljens namn";
+  document.getElementById("ikon").innerHTML = IKONER[ikon] || IKONER.mall;
+  const el = document.getElementById("namn");
+  el.textContent = namn;
+
+  // Låst regel för långa namn: krymp stegvis (112 → minst 76 px), max två rader.
+  document.fonts.ready.then(() => {
+    const lh = () => parseFloat(getComputedStyle(el).lineHeight);
+    let size = 112;
+    while (size > 76 && (el.scrollWidth > el.clientWidth || el.offsetHeight > lh() * 2 + 1)) {
+      size -= 4; el.style.fontSize = size + "px";
+    }
+    document.body.dataset.klar = "1";
+  });
+</script>
+</body>
+</html>
